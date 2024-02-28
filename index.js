@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
 const appSettings = {
     databaseURL: "https://add-to-cart-1562a-default-rtdb.firebaseio.com/"
@@ -15,7 +15,9 @@ const shoppingListEl = document.getElementById("shopping-list")
 
 addButtonEl.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
+    
     push(shoppingListInDB, inputValue)
+    
     clearInputFieldEl()
 })
 
@@ -35,16 +37,14 @@ onValue(shoppingListInDB, function(snapshot) {
     } else {
         shoppingListEl.innerHTML = "No items here... yet"
     }
-    
-    
 })
-
-function clearInputFieldEl() {
-    inputFieldEl.value = ""
-}
 
 function clearShoppingListEl() {
     shoppingListEl.innerHTML = ""
+}
+
+function clearInputFieldEl() {
+    inputFieldEl.value = ""
 }
 
 function appendItemToShoppingListEl(item) {
@@ -55,9 +55,11 @@ function appendItemToShoppingListEl(item) {
     
     newEl.textContent = itemValue
     
-    newEl.addEventListener("dblclick", function() {
+    newEl.addEventListener("click", function() {
         let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`)
+        
         remove(exactLocationOfItemInDB)
     })
+    
     shoppingListEl.append(newEl)
 }
