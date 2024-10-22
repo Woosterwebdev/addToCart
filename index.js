@@ -13,6 +13,7 @@ const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
 const shoppingListEl = document.getElementById("shopping-list")
 
+/* Add button listener and push new itme to DB on firebase */
 addButtonEl.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
     
@@ -21,6 +22,7 @@ addButtonEl.addEventListener("click", function() {
     clearInputFieldEl()
 })
 
+/* Conditionally loops through list or renders message to add items */
 onValue(shoppingListInDB, function(snapshot) {
     if (snapshot.exists()) {
         let itemsArray = Object.entries(snapshot.val())
@@ -39,14 +41,17 @@ onValue(shoppingListInDB, function(snapshot) {
     }
 })
 
+/* clears shoppingListEl */
 function clearShoppingListEl() {
     shoppingListEl.innerHTML = ""
 }
 
+/* Clears inputFieldEl */
 function clearInputFieldEl() {
     inputFieldEl.value = ""
 }
 
+/* Adds item and its remove listener to list */
 function appendItemToShoppingListEl(item) {
     let itemID = item[0]
     let itemValue = item[1]
